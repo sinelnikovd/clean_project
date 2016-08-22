@@ -1,0 +1,54 @@
+@import "bourbon"
+@import "helpers/_reset.sass"
+@import "basic/sprite.sass"
+@import "basic/fonts.sass"
+@import "basic/vars/font-size.sass"
+@import "basic/vars/color.sass"
+//---addSmartScript---//
+
+*::-webkit-input-placeholder
+	color: #424242
+	opacity: 1
+
+
+*:-moz-placeholder
+	color: #424242
+	opacity: 1
+
+*::-moz-placeholder
+	color: #424242
+	opacity: 1
+
+*:-ms-input-placeholder
+	color: #424242
+	opacity: 1
+
+body input:focus:required:invalid,
+body textarea:focus:required:invalid
+	color: #424242
+
+body input:required:valid,
+body textarea:required:valid
+	color: #424242
+
+body
+	font-size: 14px
+	min-width: 1200px
+	position: relative
+	line-height: 1.3
+	font-family: $helvetica
+	font-weight: normal
+	overflow-x: hidden
+	color: #000
+
+
+/* icon */
+.icon
+	display: inline-block
+/* end icon */
+
+
+
+
+//ALWAYS END
+@import "basic/_media.sass"
