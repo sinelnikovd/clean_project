@@ -64,8 +64,8 @@ gulp.task('sprite', function() {
 });
 
 gulp.task('watch', function () {
-	gulp.watch('dev/sass/**/*.sass', ['sass']);
-	gulp.watch('dev/jade/**/*.jade', ['jade']);
+	gulp.watch('dev/sass/**/**/**/*.sass', ['sass']);
+	gulp.watch('dev/jade/**/**/**/*.jade', ['jade']);
 	gulp.watch('dev/sprite/*.*', ['sprite']);
 });
 
