@@ -1,9 +1,10 @@
 @import "bourbon"
 @import "helpers/_reset.sass"
-//@import "basic/sprite.sass"
+@import "basic/retina.scss"
+@import "basic/hover.scss"
+@import "basic/normal.scss"
 @import "basic/fonts.sass"
-@import "basic/vars/font-size.sass"
-@import "basic/vars/color.sass"
+@import "basic/color.sass"
 //---addSmartScript---//
 
 *::-webkit-input-placeholder
@@ -41,14 +42,15 @@ body
 	overflow-x: hidden
 	color: #000
 
+.container
+	max-width: 1200px
+	padding: 0 15px
+	margin: 0 auto
 
-/* icon */
-.icon
+.sp-retina,
+.sp-hover,
+.sp-normal
 	display: inline-block
-/* end icon */
-
-
-
 
 //ALWAYS END
 @import "basic/_media.sass"

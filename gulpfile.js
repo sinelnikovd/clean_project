@@ -1,11 +1,12 @@
 var gulp = require('gulp'),
 sass = require('gulp-sass'),
 connect = require('gulp-connect'),
-jade = require('gulp-jade'),
+pug = require('gulp-pug'),
+coffee = require('gulp-coffee'),
 autoprefixer = require('gulp-autoprefixer'),
 cleanCSS = require('gulp-clean-css'),
 rename = require('gulp-rename'),
-spritesmith = require('gulp.spritesmith'),
+spritesmith = require('gulp.spritesmith-multi'),
 plumber = require('gulp-plumber');
 
 
@@ -32,14 +33,14 @@ gulp.task('sass', function () {
 });
 
 
-gulp.task('jade', function() {
-	gulp.src('dev/jade/pages/*.jade')
+gulp.task('pug', function() {
+	gulp.src('dev/pug/pages/*.pug')
 	.pipe(plumber({
 		handleError: function (err) {
 			console.log(err);
 		}
 	}))
-	.pipe(jade({
+	.pipe(pug({
 		pretty: true
 	})).on('error', console.log)
 	.pipe(connect.reload())
@@ -48,25 +49,30 @@ gulp.task('jade', function() {
 
 gulp.task('sprite', function() {
 	var spriteData = 
-		gulp.src('dev/sprite/*.*')
+		gulp.src('dev/sprite/**/*.*')
 			.pipe(spritesmith({
-				imgName: 'sprite.png',
-				cssName: 'sprite.sass',
-				cssFormat: 'sass',
-				algorithm: 'binary-tree',
-				cssTemplate: 'sass.template.mustache',
-				cssVarMap: function(sprite) {
-						sprite.name = 's-' + sprite.name
+				spritesmith: function (options) {
+					options.imgPath = 'media/img/' + options.imgName;
+					options.algorithm = 'binary-tree';
+					options.cssFormat = 'sass';
 				}
 			}));
 	spriteData.img.pipe(gulp.dest('app/media/img/'));
 	spriteData.css.pipe(gulp.dest('dev/sass/basic/'));
 });
 
-gulp.task('watch', function () {
-	gulp.watch('dev/sass/**/**/**/*.sass', ['sass']);
-	gulp.watch('dev/jade/**/**/**/*.jade', ['jade']);
-	gulp.watch('dev/sprite/*.*', ['sprite']);
+
+gulp.task('coffee', function() {
+	gulp.src('dev/coffee/*.coffee')
+	.pipe(coffee({bare: true}).on('error', console.log))
+	.pipe(gulp.dest('app/js/'));
 });
 
-gulp.task('default', ['sprite', 'jade', 'sass', 'connect', 'watch']);
+gulp.task('watch', function () {
+	gulp.watch('dev/sass/**/**/*.sass', ['sass']);
+	gulp.watch('dev/pug/**/**/*.pug', ['pug']);
+	gulp.watch('dev/coffee/**/**/*.coffee', ['coffee']);
+	gulp.watch('dev/sprite/**/**/*.*', ['sprite']);
+});
+
+gulp.task('default', ['sprite', 'pug', 'sass', 'connect', 'watch', 'coffee']);
