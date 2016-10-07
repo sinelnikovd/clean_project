@@ -1,10 +1,9 @@
 @import "bourbon"
 @import "helpers/_reset.sass"
-@import "basic/retina.scss"
-@import "basic/hover.scss"
-@import "basic/normal.scss"
-@import "basic/fonts.sass"
-@import "basic/color.sass"
+@import "basic/**/*.*"
+@import "blocks/*.*"
+@import "libs/*.*"
+@import "pages/*.*"
 //---addSmartScript---//
 
 *::-webkit-input-placeholder
@@ -46,6 +45,9 @@ body
 	max-width: 1200px
 	padding: 0 15px
 	margin: 0 auto
+
+.hidden
+	display: none
 
 .sp-retina,
 .sp-hover,
