@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
 sass = require('gulp-sass'),
-bulkSass = require('gulp-sass-bulk-import'),
+globbing = require('gulp-css-globbing'),
 connect = require('gulp-connect'),
 pug = require('gulp-pug'),
 coffee = require('gulp-coffee'),
@@ -11,7 +11,10 @@ autoprefixer = require('gulp-autoprefixer'),
 cleanCSS = require('gulp-clean-css'),
 rename = require('gulp-rename'),
 spritesmith = require('gulp.spritesmith-multi'),
-plumber = require('gulp-plumber');
+plumber = require('gulp-plumber'),
+svgsprite = require('gulp-svg-sprites'),
+filter = require('gulp-filter'),
+svg2png = require('gulp-svg2png');
 
 
 gulp.task('connect', function() {
@@ -21,9 +24,18 @@ gulp.task('connect', function() {
 	});
 });
 
+gulp.task('reName-bemto', function() {
+	gulp.src('node_modules/bemto.jade/**/*.jade')
+	.pipe(rename({extname: ".pug"}))
+	.pipe(gulp.dest('node_modules/bemto.jade'));
+});
+
+
 gulp.task('sass', function () {
 	gulp.src('dev/sass/*.sass')
-	.pipe(bulkSass())
+	.pipe(globbing({
+		extensions: ['.scss','.sass']
+	}))
 	.pipe(sass({
 		includePaths: require('node-bourbon').includePaths
 	})).on('error', sass.logError)
@@ -46,11 +58,40 @@ gulp.task('pug', function() {
 		}
 	}))
 	.pipe(pug({
+		basedir: 'dev',
+		filename: '*.jade',
 		pretty: true
 	})).on('error', console.log)
 	.pipe(connect.reload())
 	.pipe(gulp.dest('app'));
 });
+
+
+gulp.task('svgSprite', function() {
+	gulp.src('dev/svg/*.svg')
+	.pipe(svgsprite({
+		preview: false,
+		templates: {
+			css: require("fs").readFileSync('svg_sprite_tmpl.scss', "utf-8")
+		},
+		svg: {
+				symbols: 'symbol_sprite.svg'
+		},
+		cssFile: '../../../dev/sass/libs/_svg_sprite.scss',
+
+	}))
+	.pipe(gulp.dest("app/media/img"))
+	.pipe(filter("**/*.svg"))
+	.pipe(svg2png())
+	.pipe(gulp.dest("app/media/img"));
+});
+
+/*gulp.task('svgToPng', function() {
+	gulp.src('dev/svg/*.svg')
+	.pipe(svg2png())
+	.pipe(gulp.dest("dev/sprite/sp/normal/"));
+});*/
+
 
 gulp.task('sprite', function() {
 	var spriteData = 
@@ -99,6 +140,7 @@ gulp.task('watch', function () {
 	gulp.watch('dev/coffee/**/**/*.coffee', ['coffee']);
 	gulp.watch('dev/js/**/**/*.js', ['vendor']);
 	gulp.watch('dev/sprite/**/**/*.*', ['sprite']);
+	gulp.watch('dev/svg/*.*', ['svgSprite']);
 });
 
-gulp.task('default', ['sprite', 'pug', 'sass', 'connect', 'watch', 'coffee', 'vendor']);
+gulp.task('default', ['reName-bemto', 'svgSprite', 'sprite', 'pug', 'sass', 'connect', 'watch', 'coffee', 'vendor']);

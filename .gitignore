@@ -3,4 +3,4 @@
 *.sublime-gulp.cache
 *.glue
 *.zip
-sublime-gulp.log
+*.log
