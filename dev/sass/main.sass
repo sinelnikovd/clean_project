@@ -1,51 +1,42 @@
-@import "bourbon"
-@import "helpers/_reset.sass"
-@import "basic/**/*.*"
-@import "blocks/*.*"
-@import "libs/*.*"
-@import "pages/*.*"
-@import "../pug/blocks/**/*.sass"
-//---addSmartScript---//
-
-*::-webkit-input-placeholder
-	color: #424242
-	opacity: 1
+@import 'bourbon'
+@import 'helpers/*.*'
+@import 'basic/*.*'
+@import '../js/libs/**/*.scss'
+@import '../js/libs/**/*.sass'
 
 
-*:-moz-placeholder
-	color: #424242
-	opacity: 1
-
-*::-moz-placeholder
-	color: #424242
-	opacity: 1
-
-*:-ms-input-placeholder
-	color: #424242
-	opacity: 1
-
-body input:focus:required:invalid,
-body textarea:focus:required:invalid
-	color: #424242
-
-body input:required:valid,
-body textarea:required:valid
-	color: #424242
+*
+	+placeholder
+		color: $c-placeholder
+		opacity: 1
 
 body
-	font-size: 14px
+	background-color: $c-white
+	color: $c-default
+	font: normal 14px/1.3em $helvetica
 	min-width: 1200px
-	position: relative
-	line-height: 1.3
-	font-family: $helvetica
-	font-weight: normal
 	overflow-x: hidden
-	color: #000
+	position: relative
+
+	input
+		&:focus
+			&:required
+				&:invalid
+					color: $c-placeholder
+
+	textarea
+		&:focus
+			&:required
+				&:invalid
+					color: $c-placeholder
+
 
 .container
+	font-size: 30px
+	margin: 0 auto
 	max-width: 1200px
 	padding: 0 15px
-	margin: 0 auto
+
 
 .hidden
 	display: none
@@ -55,5 +46,9 @@ body
 .sp-normal
 	display: inline-block
 
+
+@import './../blocks/**/*.sass'
+@import 'pages/*.*'
+
 //ALWAYS END
-@import "basic/_media.sass"
+@import 'basic/_media.sass'
