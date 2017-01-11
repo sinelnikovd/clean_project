@@ -68,7 +68,7 @@ rules:
   mixin-name-format:
     - 1
     - allow-leading-underscore: true
-      convention: camelcase
+      convention: hyphenatedlowercase
   mixins-before-declarations: 1
   nesting-depth:
     - 1
