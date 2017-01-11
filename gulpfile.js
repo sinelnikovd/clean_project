@@ -89,7 +89,7 @@ gulp.task('styles', function () {
 gulp.task('sass:lint', function () {
 	return gulp.src(['dev/{sass, blocks}/**/*.s+(a|c)ss', '!dev/sass/**/_*.s+(a|c)ss'])
 		.pipe(sassLint({
-			configFile: 'sass-lint.yml'
+			configFile: '.sass-lint.yml'
 		}))
 		.pipe(sassLint.format())
 		.pipe(sassLint.failOnError())
@@ -189,11 +189,11 @@ gulp.task('js', function() {
 });
 
 
-gulp.task('copy', () => (
-	gulp.src('dev/resources/**/*')
+gulp.task('copy', function() {
+	gulp.src(['dev/resources/**/*', '!dev/resources/**/*_tmp*'])
 		.pipe(changed('app'))
 		.pipe(gulp.dest('app'))
-));
+});
 
 
 
